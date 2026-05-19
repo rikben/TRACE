@@ -1,0 +1,45 @@
+# /forest-dashboard/docker-compose.yml
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: forest-dashboard-app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.4
+    container_name: forest-dashboard-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: forest_dashboard
+      MYSQL_USER: forest_user
+      MYSQL_PASSWORD: forest_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./sql/seed_questions.sql:/docker-entrypoint-initdb.d/02-seed_questions.sql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: forest-dashboard-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    depends_on:
+      - db
+
+volumes:
+  db_data:
