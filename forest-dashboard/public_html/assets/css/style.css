@@ -1,0 +1,39 @@
+/* /forest-dashboard/public_html/assets/css/style.css */
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+}
+
+.app-container {
+    height: calc(100vh - 56px);
+}
+
+.sidebar {
+    height: 100%;
+    overflow-y: auto;
+    background: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+}
+
+.map-wrapper {
+    height: 100%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.ol-popup {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    min-width: 180px;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
+}

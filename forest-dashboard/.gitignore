@@ -1,0 +1,10 @@
+# /.gitignore
+
+.env
+/uploads/*
+!/uploads/.gitkeep
+!/uploads/observations/
+!/uploads/observations/.gitkeep
+
+*.log
+.DS_Store

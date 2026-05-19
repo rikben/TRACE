@@ -1,0 +1,32 @@
+# /.github/workflows/deploy-production.yml
+
+name: Deploy forest-dashboard to production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "forest-dashboard/**"
+      - ".github/workflows/deploy-production.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy forest-dashboard contents
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "forest-dashboard/*"
+          target: ${{ secrets.SSH_TARGET_DIR }}
+          strip_components: 1
+          overwrite: true
+          rm: false
