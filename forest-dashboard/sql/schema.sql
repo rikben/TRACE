@@ -10,7 +10,8 @@ CREATE TABLE questions (
         'boolean',
         'single_choice',
         'multiple_choice',
-        'rating'
+        'rating',
+        'photo'
     ) NOT NULL,
     hint_text TEXT NULL,
     image_path VARCHAR(255) NULL,
@@ -29,9 +30,7 @@ CREATE TABLE question_options (
     option_label VARCHAR(255) NOT NULL,
     sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (question_id)
-      REFERENCES questions(id)
-      ON DELETE CASCADE
+    FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
 );
 
 CREATE TABLE observations (

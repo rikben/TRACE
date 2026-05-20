@@ -56,3 +56,60 @@ body {
     min-width: 180px;
     box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
 }
+
+/* Question wizard */
+
+.observation-modal {
+    min-height: 70vh;
+}
+
+.question-step {
+    opacity: 0;
+    transform: translateX(16px);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.question-step-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.question-card {
+    min-height: 45vh;
+}
+
+.question-image {
+    max-height: 260px;
+    object-fit: contain;
+    width: 100%;
+    background: #f8f9fa;
+}
+
+.answer-option.active,
+.rating-button.active {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.rating-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.rating-button {
+    min-height: 3rem;
+}
+
+@media (min-width: 768px) {
+    .rating-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .question-image {
+        max-height: 34vh;
+    }
+}

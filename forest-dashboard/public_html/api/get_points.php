@@ -1,7 +1,7 @@
 <?php
-// /forest-dashboard/api/get_points.php
+// /forest-dashboard/public_html/api/get_points.php
 
-require_once __DIR__ . '/../config/app.php';
+require_once __DIR__ . '/../../config/app.php';
 
 use App\Core\Database;
 use App\Core\Response;

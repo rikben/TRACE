@@ -14,7 +14,7 @@ class ObservationRepository
     public function getAllPoints(): array
     {
         $sql = "
-            SELECT 
+            SELECT
                 id,
                 latitude,
                 longitude,
@@ -57,21 +57,23 @@ class ObservationRepository
     {
         $sql = "
             INSERT INTO observation_responses
-            (observation_id, question_id, answer_text, answer_number, answer_json)
+            (observation_id, question_id, answer_value)
             VALUES
-            (:observation_id, :question_id, :answer_text, :answer_number, :answer_json)
+            (:observation_id, :question_id, :answer_value)
         ";
+
+        $answerValue = $response['answer_value'] ?? null;
+
+        if (is_array($answerValue)) {
+            $answerValue = json_encode($answerValue);
+        }
 
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute([
             ':observation_id' => $observationId,
             ':question_id' => $response['question_id'],
-            ':answer_text' => $response['answer_text'] ?? null,
-            ':answer_number' => $response['answer_number'] ?? null,
-            ':answer_json' => isset($response['answer_json'])
-                ? json_encode($response['answer_json'])
-                : null,
+            ':answer_value' => $answerValue,
         ]);
     }
 }

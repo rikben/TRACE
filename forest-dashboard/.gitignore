@@ -1,10 +1,9 @@
 # /.gitignore
 
 .env
-/uploads/*
-!/uploads/.gitkeep
-!/uploads/observations/
-!/uploads/observations/.gitkeep
+
+/public_html/uploads/*
+!/public_html/uploads/.gitkeep
 
 *.log
 .DS_Store

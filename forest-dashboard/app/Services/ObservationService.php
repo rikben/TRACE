@@ -55,5 +55,15 @@ class ObservationService
         if ($data['final_score'] < 0 || $data['final_score'] > 10) {
             throw new Exception('Final score must be between 0 and 10.');
         }
+
+        foreach ($data['responses'] ?? [] as $response) {
+            if (!isset($response['question_id'])) {
+                throw new Exception('A response is missing question_id.');
+            }
+
+            if (!array_key_exists('answer_value', $response)) {
+                throw new Exception('A response is missing answer_value.');
+            }
+        }
     }
 }

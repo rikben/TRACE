@@ -11,13 +11,18 @@ const Api = {
         return await response.json();
     },
 
-    async submitObservation(data) {
+    async submitObservation(data, photoFile = null) {
+        const formData = new FormData();
+
+        formData.append('payload', JSON.stringify(data));
+
+        if (photoFile) {
+            formData.append('photo', photoFile);
+        }
+
         const response = await fetch('/api/submit_observation.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: formData
         });
 
         return await response.json();

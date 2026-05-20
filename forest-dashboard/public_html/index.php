@@ -73,6 +73,31 @@ require_once __DIR__ . '/../config/app.php';
     </div>
 </div>
 
+<!-- Observation modal -->
+<div class="modal fade" id="observationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
+        <div class="modal-content observation-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Tree observation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="progress mb-4">
+                    <div id="questionProgress" class="progress-bar bg-success" style="width: 0%"></div>
+                </div>
+
+                <div id="questionContainer" class="question-step"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="previousQuestionBtn" class="btn btn-outline-secondary">Previous</button>
+                <button id="nextQuestionBtn" class="btn btn-success">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ol@v10.6.1/dist/ol.js"></script>
 

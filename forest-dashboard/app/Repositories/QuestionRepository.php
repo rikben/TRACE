@@ -14,29 +14,50 @@ class QuestionRepository
     public function getActiveQuestions(): array
     {
         $sql = "
-            SELECT 
+            SELECT
                 id,
+                question_key,
                 question_text,
                 question_type,
-                options_json,
+                hint_text,
+                image_path,
                 required,
+                min_value,
+                max_value,
                 sort_order
             FROM questions
             WHERE active = TRUE
             ORDER BY sort_order ASC, id ASC
         ";
 
-        $stmt = $this->db->query($sql);
-        $questions = $stmt->fetchAll();
+        $questions = $this->db->query($sql)->fetchAll();
 
         foreach ($questions as &$question) {
-            $question['options'] = $question['options_json']
-                ? json_decode($question['options_json'], true)
-                : null;
-
-            unset($question['options_json']);
+            $question['required'] = (bool) $question['required'];
+            $question['options'] = $this->getOptions((int) $question['id']);
         }
 
         return $questions;
+    }
+
+    private function getOptions(int $questionId): array
+    {
+        $sql = "
+            SELECT
+                option_value,
+                option_label,
+                sort_order
+            FROM question_options
+            WHERE question_id = :question_id
+            ORDER BY sort_order ASC, id ASC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':question_id' => $questionId,
+        ]);
+
+        return $stmt->fetchAll();
     }
 }
