@@ -183,16 +183,10 @@ INSERT INTO question_options (
     sort_order
 )
 VALUES
-    (@question_id, 'thuja', 'Thuja', 1),
-    (@question_id, 'palm', 'Palm', 2),
     (@question_id, 'pine', 'Pine', 3),
-    (@question_id, 'plane', 'Plane', 4),
     (@question_id, 'spruce', 'Spruce', 5),
     (@question_id, 'poplar', 'Poplar', 6),
-    (@question_id, 'olive', 'Olive', 7),
-    (@question_id, 'acacia', 'Acacia', 8),
     (@question_id, 'cypress', 'Cypress', 9),
-    (@question_id, 'eucalyptus', 'Eucalyptus', 10),
     (@question_id, 'linden', 'Linden', 11),
     (@question_id, 'oak', 'Oak', 12),
     (@question_id, 'maple', 'Maple', 13),
@@ -222,14 +216,14 @@ INSERT INTO questions (
     active
 )
 VALUES (
-           'tree_health',
-           'Does the tree look healthy?',
-           'single_choice',
-           'Dead wood and decaying material can actually increase biodiversity by providing habitats and nutrients.',
-           TRUE,
-           6,
-           TRUE
-       );
+    'tree_health',
+    'Does the tree look healthy?',
+    'single_choice',
+    'Dead wood and decaying material can actually increase biodiversity by providing habitats and nutrients.',
+    TRUE,
+    6,
+    TRUE
+);
 
 SET @question_id = LAST_INSERT_ID();
 
@@ -258,14 +252,14 @@ INSERT INTO questions (
     active
 )
 VALUES (
-           'animal_activity',
-           'Do you notice any signs of animal life around the tree?',
-           'single_choice',
-           'Bird nests, insects, and spiderwebs are important indicators of ecological activity and habitat quality.',
-           TRUE,
-           7,
-           TRUE
-       );
+    'animal_activity',
+    'Do you notice any signs of animal life around the tree?',
+    'single_choice',
+    'Bird nests, insects, and spiderwebs are important indicators of ecological activity and habitat quality.',
+    TRUE,
+    7,
+    TRUE
+);
 
 SET @question_id = LAST_INSERT_ID();
 
@@ -294,14 +288,14 @@ INSERT INTO questions (
     active
 )
 VALUES (
-           'ground_cover',
-           'How would you describe the ground cover around the tree?',
-           'single_choice',
-           'Undergrowth and organic litter create habitats for insects, fungi, and microorganisms.',
-           TRUE,
-           8,
-           TRUE
-       );
+    'ground_cover',
+    'How would you describe the ground cover around the tree?',
+    'single_choice',
+    'Undergrowth and organic litter create habitats for insects, fungi, and microorganisms.',
+    TRUE,
+    8,
+    TRUE
+);
 
 SET @question_id = LAST_INSERT_ID();
 
@@ -332,13 +326,13 @@ INSERT INTO questions (
     active
 )
 VALUES (
-           'final_score',
-           'Based on the questions you answered, how much do you agree with the biodiversity heatmap?',
-           'rating',
-           'Your assessment helps validate and improve the biodiversity prediction model.',
-           TRUE,
-           1,
-           5,
-           9,
-           TRUE
-       );
+    'final_score',
+    'Based on the questions you answered, how much do you agree with the biodiversity heatmap?',
+    'rating',
+    'Your assessment helps validate and improve the biodiversity prediction model.',
+    TRUE,
+    1,
+    5,
+    9,
+    TRUE
+);
