@@ -1,5 +1,9 @@
 /* /forest-dashboard/public_html/assets/css/style.css */
 
+/* =========================================================
+   Base layout
+   ========================================================= */
+
 html,
 body {
     min-height: 100%;
@@ -29,13 +33,52 @@ body {
 
 #map {
     width: 100%;
-    height: 70vh;
-    min-height: 420px;
+    height: 75vh;
+    min-height: 500px;
 }
 
-/* Desktop layout */
-@media (min-width: 768px) {
+/* =========================================================
+   Navbar
+   ========================================================= */
 
+.app-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.app-title i {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.app-title-text {
+    min-width: 0;
+}
+
+.app-title-main {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+}
+
+.app-title-sub {
+    font-size: 0.78rem;
+    opacity: 0.9;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================================================
+   Desktop layout
+   ========================================================= */
+
+@media (min-width: 768px) {
     html,
     body {
         height: 100%;
@@ -67,17 +110,21 @@ body {
     }
 }
 
-/* OpenLayers popup */
+/* =========================================================
+   OpenLayers
+   ========================================================= */
 
 .ol-popup {
-    background: white;
+    background: #ffffff;
     border-radius: 0.5rem;
     padding: 0.75rem;
     min-width: 180px;
     box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
 }
 
-/* Question wizard */
+/* =========================================================
+   Question wizard
+   ========================================================= */
 
 .observation-modal {
     min-height: 70vh;
@@ -101,23 +148,24 @@ body {
 }
 
 .question-image {
+    width: 100%;
     max-height: 260px;
     object-fit: contain;
-    width: 100%;
     background: #f8f9fa;
     border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
 }
 
 .answer-option.active,
 .rating-button.active {
-    color: #fff;
+    color: #ffffff;
     background-color: #198754;
     border-color: #198754;
 }
 
 .rating-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
 }
 
@@ -155,7 +203,9 @@ body {
     }
 }
 
-/* Legend */
+/* =========================================================
+   Legend
+   ========================================================= */
 
 #mapLegend .card-body {
     max-height: 260px;
@@ -208,7 +258,9 @@ body {
     background: #00441b;
 }
 
-/* Observation details modal */
+/* =========================================================
+   Observation details modal
+   ========================================================= */
 
 .observation-photo {
     width: 100%;
@@ -245,20 +297,21 @@ body {
     color: #6c757d;
 }
 
-/* Mobile adjustments */
+/* =========================================================
+   Mobile refinements
+   ========================================================= */
 
 @media (max-width: 767px) {
-
-    .question-image {
-        max-height: 34vh;
-    }
-
-    .rating-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .navbar {
+        min-height: 56px;
     }
 
     .sidebar {
         padding-bottom: 2rem;
+    }
+
+    .question-image {
+        max-height: 34vh;
     }
 
     #map {
@@ -267,10 +320,21 @@ body {
     }
 }
 
-/* Larger screens */
+@media (max-width: 576px) {
+    .app-title-main {
+        font-size: 0.95rem;
+    }
+
+    .app-title-sub {
+        font-size: 0.72rem;
+    }
+}
+
+/* =========================================================
+   Larger screens
+   ========================================================= */
 
 @media (min-width: 768px) {
-
     .rating-grid {
         grid-template-columns: repeat(6, 1fr);
     }

@@ -19,10 +19,19 @@ require_once __DIR__ . '/../config/app.php';
 <body>
 
 <nav class="navbar navbar-dark bg-success px-3">
-    <span class="navbar-brand mb-0 h1">
+    <div class="navbar-brand app-title mb-0">
         <i class="bi bi-tree-fill"></i>
-        TRACE - Forest Biodiversity Dashboard
-    </span>
+
+        <div class="app-title-text">
+            <div class="app-title-main">
+                TRACE
+            </div>
+
+            <div class="app-title-sub">
+                Forest Biodiversity Dashboard
+            </div>
+        </div>
+    </div>
 </nav>
 
 <div class="container-fluid app-container">
