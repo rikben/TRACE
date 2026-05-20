@@ -46,7 +46,7 @@ body {
     }
 
     .app-container,
-    .app-container .row {
+    .app-row {
         height: calc(100vh - 56px);
     }
 

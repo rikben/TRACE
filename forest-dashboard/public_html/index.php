@@ -26,7 +26,7 @@ require_once __DIR__ . '/../config/app.php';
 </nav>
 
 <div class="container-fluid app-container">
-    <div class="row h-100">
+    <div class="row app-row">
         <aside class="col-md-4 col-lg-3 sidebar p-3">
             <h2 class="h5">Citizen science observation</h2>
 
