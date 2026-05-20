@@ -22,6 +22,7 @@ const ObservationForm = {
         this.questions = result.questions;
         this.answers = {};
         this.currentIndex = 0;
+        this.hideSubmissionFeedback();
 
         this.modal = new bootstrap.Modal(
             document.getElementById('observationModal')
@@ -332,6 +333,10 @@ const ObservationForm = {
     },
 
     async submit() {
+        this.hideValidation();
+        this.hideSubmissionFeedback();
+        this.setSubmitting(true);
+
         const photoQuestion = this.questions.find(
             question => question.question_type === 'photo'
         );
@@ -372,18 +377,42 @@ const ObservationForm = {
             responses
         };
 
-        const result = await Api.submitObservation(payload, photoFile);
+        try {
+            const result = await Api.submitObservation(payload, photoFile);
 
-        if (!result.success) {
-            alert(result.message || 'Something went wrong.');
-            return;
+            if (!result.success) {
+                this.showSubmissionFeedback(
+                    result.message || 'Something went wrong while saving your observation.',
+                    'danger'
+                );
+
+                this.setSubmitting(false);
+                return;
+            }
+
+            this.showSubmissionFeedback(
+                'Observation saved. Thank you for contributing!',
+                'success'
+            );
+
+            Observations.load();
+
+            setTimeout(() => {
+                this.setSubmitting(false);
+                this.modal.hide();
+
+                // Later we can replace this with:
+                // ObservationDetails.open(result.observation_id);
+            }, 1200);
+
+        } catch (error) {
+            this.showSubmissionFeedback(
+                'Could not submit the observation. Please check your connection and try again.',
+                'danger'
+            );
+
+            this.setSubmitting(false);
         }
-
-        this.modal.hide();
-
-        alert('Observation saved.');
-
-        Observations.load();
     },
 
     updateButtons() {
@@ -392,7 +421,9 @@ const ObservationForm = {
 
         previousBtn.disabled = this.currentIndex === 0;
 
-        nextBtn.textContent = this.currentIndex === this.questions.length - 1
+        const nextText = document.getElementById('nextQuestionText');
+
+        nextText.textContent = this.currentIndex === this.questions.length - 1
             ? 'Save observation'
             : 'Continue';
     },
@@ -432,6 +463,46 @@ const ObservationForm = {
         }
 
         validation.classList.add('d-none');
+    },
+
+    setSubmitting(isSubmitting) {
+        const nextBtn = document.getElementById('nextQuestionBtn');
+        const previousBtn = document.getElementById('previousQuestionBtn');
+        const nextText = document.getElementById('nextQuestionText');
+        const spinner = document.getElementById('nextQuestionSpinner');
+
+        nextBtn.disabled = isSubmitting;
+        previousBtn.disabled = isSubmitting || this.currentIndex === 0;
+
+        spinner.classList.toggle('d-none', !isSubmitting);
+
+        if (isSubmitting) {
+            nextText.textContent = 'Saving';
+        } else {
+            this.updateButtons();
+        }
+    },
+
+    showSubmissionFeedback(message, type = 'success') {
+        const feedback = document.getElementById('submissionFeedback');
+
+        if (!feedback) {
+            return;
+        }
+
+        feedback.className = `alert alert-${type} mt-3`;
+        feedback.textContent = message;
+    },
+
+    hideSubmissionFeedback() {
+        const feedback = document.getElementById('submissionFeedback');
+
+        if (!feedback) {
+            return;
+        }
+
+        feedback.className = 'alert mt-3 d-none';
+        feedback.textContent = '';
     },
 
     escape(value) {

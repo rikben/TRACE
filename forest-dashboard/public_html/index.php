@@ -88,11 +88,23 @@ require_once __DIR__ . '/../config/app.php';
                 </div>
 
                 <div id="questionContainer" class="question-step"></div>
+                <div
+                    id="submissionFeedback"
+                    class="alert mt-3 d-none"
+                    role="alert"
+                ></div>
             </div>
 
             <div class="modal-footer">
                 <button id="previousQuestionBtn" class="btn btn-outline-secondary">Previous</button>
-                <button id="nextQuestionBtn" class="btn btn-success">Continue</button>
+                <button id="nextQuestionBtn" class="btn btn-success">
+                    <span id="nextQuestionText">Continue</span>
+                    <span
+                            id="nextQuestionSpinner"
+                            class="spinner-border spinner-border-sm ms-2 d-none"
+                            aria-hidden="true"
+                    ></span>
+                </button>
             </div>
         </div>
     </div>
