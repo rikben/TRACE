@@ -30,5 +30,3 @@ jobs:
           strip_components: 1
           overwrite: true
           rm: false
-          exclude: |
-            forest-dashboard/public_html/uploads/*
