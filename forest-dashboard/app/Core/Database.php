@@ -16,15 +16,23 @@ class Database
             return self::$connection;
         }
 
-        $driver = Env::get('DB_DRIVER');
-        $host = Env::get('DB_HOST');
-        $port = Env::get('DB_PORT');
+        $driver = Env::get('DB_DRIVER', 'mysql');
+        $host = Env::get('DB_HOST', 'localhost');
+        $port = Env::get('DB_PORT', '3306');
         $dbname = Env::get('DB_NAME');
-        $charset = Env::get('DB_CHARSET');
+        $charset = Env::get('DB_CHARSET', 'utf8mb4');
         $user = Env::get('DB_USER');
         $pass = Env::get('DB_PASS');
 
-        $dsn = "{$driver}:host={$host};port={$port};dbname={$dbname};charset={$charset}";
+        if (!$dbname || !$user) {
+            throw new PDOException('Database configuration is incomplete.');
+        }
+
+        $dsn = "{$driver}:host={$host};dbname={$dbname};charset={$charset}";
+
+        if (!empty($port) && $host !== 'localhost') {
+            $dsn = "{$driver}:host={$host};port={$port};dbname={$dbname};charset={$charset}";
+        }
 
         try {
 
