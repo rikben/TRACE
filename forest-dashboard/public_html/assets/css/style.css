@@ -15,19 +15,38 @@ body {
 }
 
 .sidebar {
-    height: 100%;
-    overflow-y: auto;
     background: #f8f9fa;
-    border-right: 1px solid #dee2e6;
-}
-
-.map-wrapper {
-    height: 100%;
+    border-bottom: 1px solid #dee2e6;
+    overflow-y: auto;
+    padding-bottom: 1rem;
 }
 
 #map {
     width: 100%;
-    height: 100%;
+    height: 60vh;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+
+    .app-container,
+    .app-container .row {
+        height: 100%;
+    }
+
+    .sidebar {
+        height: 100%;
+        border-right: 1px solid #dee2e6;
+        border-bottom: none;
+    }
+
+    .map-wrapper {
+        height: 100%;
+    }
+
+    #map {
+        height: 100%;
+    }
 }
 
 .ol-popup {
