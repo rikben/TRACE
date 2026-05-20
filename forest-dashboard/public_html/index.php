@@ -2,6 +2,8 @@
 // /forest-dashboard/public_html/index.php
 
 require_once __DIR__ . '/../config/app.php';
+
+$assetVersion = time();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +16,7 @@ require_once __DIR__ . '/../config/app.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/ol@v10.6.1/ol.css" rel="stylesheet">
 
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/style.css?v=<?= $assetVersion ?>" rel="stylesheet">
 </head>
 <body>
 
@@ -219,10 +221,9 @@ require_once __DIR__ . '/../config/app.php';
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ol@v10.6.1/dist/ol.js"></script>
 
-<script src="assets/js/api.js"></script>
-<script src="assets/js/map.js"></script>
-<script src="assets/js/observations.js"></script>
-<script src="assets/js/form.js"></script>
-
+<script src="assets/js/api.js?v=<?= $assetVersion ?>"></script>
+<script src="assets/js/map.js?v=<?= $assetVersion ?>"></script>
+<script src="assets/js/observations.js?v=<?= $assetVersion ?>"></script>
+<script src="assets/js/form.js?v=<?= $assetVersion ?>"></script>
 </body>
 </html>

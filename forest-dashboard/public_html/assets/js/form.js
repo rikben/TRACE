@@ -159,7 +159,7 @@ const ObservationForm = {
                         capture="environment"
                     >
                     <div class="form-text">
-                        Use your camera and try to capture the full tree.
+                        Use your camera and try to capture the full tree. The photo will be compressed before upload.
                     </div>
                 `;
 
@@ -246,9 +246,26 @@ const ObservationForm = {
 
         if (input) {
             if (question.question_type === 'photo') {
-                input.addEventListener('change', () => {
+                input.addEventListener('change', async () => {
                     this.hideValidation();
-                    this.answers[question.id] = input.files[0] || null;
+
+                    const file = input.files[0] || null;
+
+                    if (!file) {
+                        this.answers[question.id] = null;
+                        return;
+                    }
+
+                    input.disabled = true;
+
+                    try {
+                        this.answers[question.id] = await this.compressImage(file);
+                    } catch (error) {
+                        this.showValidation(error.message || 'Could not process the image.');
+                        this.answers[question.id] = null;
+                    } finally {
+                        input.disabled = false;
+                    }
                 });
             } else {
                 input.addEventListener('input', () => {
@@ -503,6 +520,79 @@ const ObservationForm = {
 
         feedback.className = 'alert mt-3 d-none';
         feedback.textContent = '';
+    },
+
+    compressImage(file, maxWidth = 1600, quality = 0.75) {
+        return new Promise((resolve, reject) => {
+            if (!file.type.startsWith('image/')) {
+                reject(new Error('Selected file is not an image.'));
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = event => {
+                const image = new Image();
+
+                image.onload = () => {
+                    const scale = Math.min(1, maxWidth / image.width);
+                    const width = Math.round(image.width * scale);
+                    const height = Math.round(image.height * scale);
+
+                    const canvas = document.createElement('canvas');
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const context = canvas.getContext('2d');
+
+                    context.drawImage(image, 0, 0, width, height);
+
+                    canvas.toBlob(
+                        blob => {
+                            if (!blob) {
+                                reject(new Error('Could not compress image.'));
+                                return;
+                            }
+
+                            const compressedFile = new File(
+                                [blob],
+                                this.createCompressedFileName(file.name),
+                                {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now()
+                                }
+                            );
+
+                            resolve(compressedFile);
+                        },
+                        'image/jpeg',
+                        quality
+                    );
+                };
+
+                image.onerror = () => {
+                    reject(new Error('Could not load image.'));
+                };
+
+                image.src = event.target.result;
+            };
+
+            reader.onerror = () => {
+                reject(new Error('Could not read image.'));
+            };
+
+            reader.readAsDataURL(file);
+        });
+    },
+
+    createCompressedFileName(originalName) {
+        const baseName = originalName
+            .replace(/\.[^/.]+$/, '')
+            .replace(/[^a-z0-9_-]/gi, '_')
+            .toLowerCase();
+
+        return `${baseName || 'tree_photo'}_compressed.jpg`;
     },
 
     escape(value) {
