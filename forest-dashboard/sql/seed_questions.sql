@@ -338,7 +338,7 @@ VALUES (
            'Your assessment helps validate and improve the biodiversity prediction model.',
            TRUE,
            1,
-           10,
+           5,
            9,
            TRUE
        );
