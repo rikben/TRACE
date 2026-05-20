@@ -71,6 +71,12 @@ const ObservationForm = {
                 ` : ''}
 
                 ${this.renderInput(question)}
+
+                <div
+                    id="questionValidation"
+                    class="alert alert-danger mt-3 d-none"
+                    role="alert"
+                ></div>
             </div>
         `;
     },
@@ -196,6 +202,7 @@ const ObservationForm = {
 
         document.querySelectorAll('.answer-option').forEach(button => {
             button.addEventListener('click', () => {
+                this.hideValidation();
                 const value = button.dataset.value;
 
                 if (question.question_type === 'multiple_choice') {
@@ -239,10 +246,12 @@ const ObservationForm = {
         if (input) {
             if (question.question_type === 'photo') {
                 input.addEventListener('change', () => {
+                    this.hideValidation();
                     this.answers[question.id] = input.files[0] || null;
                 });
             } else {
                 input.addEventListener('input', () => {
+                    this.hideValidation();
                     this.answers[question.id] = input.value;
                 });
             }
@@ -284,9 +293,11 @@ const ObservationForm = {
         const question = this.questions[this.currentIndex];
 
         if (!this.isAnswered(question)) {
-            alert('Please answer this question before continuing.');
+            this.showValidation('Please answer this question before continuing.');
             return;
         }
+
+        this.hideValidation();
 
         if (this.currentIndex < this.questions.length - 1) {
             this.currentIndex++;
@@ -390,6 +401,37 @@ const ObservationForm = {
         const progress = ((this.currentIndex + 1) / this.questions.length) * 100;
 
         document.getElementById('questionProgress').style.width = `${progress}%`;
+    },
+
+    showValidation(message) {
+        const validation = document.getElementById('questionValidation');
+
+        if (!validation) {
+            return;
+        }
+
+        validation.textContent = message;
+        validation.classList.remove('d-none');
+
+        const card = document.querySelector('.question-card');
+
+        if (card) {
+            card.classList.remove('question-shake');
+
+            requestAnimationFrame(() => {
+                card.classList.add('question-shake');
+            });
+        }
+    },
+
+    hideValidation() {
+        const validation = document.getElementById('questionValidation');
+
+        if (!validation) {
+            return;
+        }
+
+        validation.classList.add('d-none');
     },
 
     escape(value) {

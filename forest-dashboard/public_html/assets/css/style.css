@@ -102,6 +102,19 @@ body {
     min-height: 3rem;
 }
 
+.question-shake {
+    animation: questionShake 0.3s ease;
+}
+
+@keyframes questionShake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+}
+
 @media (min-width: 768px) {
     .rating-grid {
         grid-template-columns: repeat(6, 1fr);
