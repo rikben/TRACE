@@ -30,9 +30,19 @@ require_once __DIR__ . '/../config/app.php';
         <aside class="col-md-4 col-lg-3 sidebar p-3">
             <h2 class="h5">Citizen science observation</h2>
 
-            <p class="text-muted small">
+            <p class="text-muted small mb-2">
                 Use your current location, judge a tree, and help validate the biodiversity model.
             </p>
+
+            <div class="alert alert-warning small py-2 mb-3">
+                <div class="fw-semibold mb-1">
+                    <i class="bi bi-info-circle"></i>
+                    Important
+                </div>
+
+                This questionnaire and biodiversity interpretation are designed primarily
+                for deciduous forest environments.
+            </div>
 
             <button id="locateBtn" class="btn btn-outline-success w-100 mb-2">
                 <i class="bi bi-geo-alt"></i>
