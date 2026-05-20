@@ -71,20 +71,66 @@ require_once __DIR__ . '/../config/app.php';
                         class="btn btn-outline-secondary btn-sm w-100"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#scoreLegend"
+                        data-bs-target="#mapLegend"
                 >
                     <i class="bi bi-list-ul"></i>
-                    Observation score legend
+                    Map legend
                 </button>
 
-                <div class="collapse mt-2" id="scoreLegend">
+                <div class="collapse mt-2" id="mapLegend">
                     <div class="card">
                         <div class="card-body p-2">
-                            <div class="legend-item"><span class="legend-dot score-1"></span><span>1 — Very low</span></div>
-                            <div class="legend-item"><span class="legend-dot score-2"></span><span>2 — Low</span></div>
-                            <div class="legend-item"><span class="legend-dot score-3"></span><span>3 — Moderate</span></div>
-                            <div class="legend-item"><span class="legend-dot score-4"></span><span>4 — High</span></div>
-                            <div class="legend-item"><span class="legend-dot score-5"></span><span>5 — Very high</span></div>
+
+                            <div class="small fw-semibold mb-2">
+                                Location
+                            </div>
+
+                            <div class="legend-item">
+                                <span class="legend-dot user-location-dot"></span>
+                                <span>Your current location</span>
+                            </div>
+
+                            <hr class="my-2">
+
+                            <div class="small fw-semibold mb-2">
+                                Citizen observations
+                            </div>
+
+                            <div class="legend-item">
+                                <span class="legend-dot score-1"></span>
+                                <span>1 — Very low</span>
+                            </div>
+
+                            <div class="legend-item">
+                                <span class="legend-dot score-2"></span>
+                                <span>2 — Low</span>
+                            </div>
+
+                            <div class="legend-item">
+                                <span class="legend-dot score-3"></span>
+                                <span>3 — Moderate</span>
+                            </div>
+
+                            <div class="legend-item">
+                                <span class="legend-dot score-4"></span>
+                                <span>4 — High</span>
+                            </div>
+
+                            <div class="legend-item">
+                                <span class="legend-dot score-5"></span>
+                                <span>5 — Very high</span>
+                            </div>
+
+                            <hr class="my-2">
+
+                            <div class="small fw-semibold mb-2">
+                                Biodiversity heatmap
+                            </div>
+
+                            <div class="legend-placeholder small text-muted">
+                                Heatmap legend will follow.
+                            </div>
+
                         </div>
                     </div>
                 </div>
