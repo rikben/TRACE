@@ -65,6 +65,30 @@ require_once __DIR__ . '/../config/app.php';
                 </label>
                 <input type="range" class="form-range" id="heatmapOpacity" min="0" max="1" step="0.1" value="0.7">
             </div>
+
+            <div class="mt-3">
+                <button
+                        class="btn btn-outline-secondary btn-sm w-100"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#scoreLegend"
+                >
+                    <i class="bi bi-list-ul"></i>
+                    Observation score legend
+                </button>
+
+                <div class="collapse mt-2" id="scoreLegend">
+                    <div class="card">
+                        <div class="card-body p-2">
+                            <div class="legend-item"><span class="legend-dot score-1"></span><span>1 — Very low</span></div>
+                            <div class="legend-item"><span class="legend-dot score-2"></span><span>2 — Low</span></div>
+                            <div class="legend-item"><span class="legend-dot score-3"></span><span>3 — Moderate</span></div>
+                            <div class="legend-item"><span class="legend-dot score-4"></span><span>4 — High</span></div>
+                            <div class="legend-item"><span class="legend-dot score-5"></span><span>5 — Very high</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </aside>
 
         <main class="col-md-8 col-lg-9 map-wrapper p-0">
@@ -105,6 +129,23 @@ require_once __DIR__ . '/../config/app.php';
                             aria-hidden="true"
                     ></span>
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="observationDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Observation details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="observationDetailsBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-success"></div>
+                </div>
             </div>
         </div>
     </div>

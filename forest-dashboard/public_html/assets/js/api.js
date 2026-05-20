@@ -11,6 +11,11 @@ const Api = {
         return await response.json();
     },
 
+    async getObservation(id) {
+        const response = await fetch(`/api/get_observation.php?id=${encodeURIComponent(id)}`);
+        return await response.json();
+    },
+
     async submitObservation(data, photoFile = null) {
         const formData = new FormData();
 

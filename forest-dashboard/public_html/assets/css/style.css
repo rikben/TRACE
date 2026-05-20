@@ -106,6 +106,48 @@ body {
     animation: questionShake 0.3s ease;
 }
 
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-dot {
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+    flex-shrink: 0;
+}
+
+.score-1 {
+    background: #d9f0d3;
+}
+
+.score-2 {
+    background: #a6dba0;
+}
+
+.score-3 {
+    background: #5aae61;
+}
+
+.score-4 {
+    background: #1b7837;
+}
+
+.score-5 {
+    background: #00441b;
+}
+
 @keyframes questionShake {
     0% { transform: translateX(0); }
     20% { transform: translateX(-6px); }
