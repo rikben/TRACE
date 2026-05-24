@@ -43,6 +43,7 @@
 <script src="assets/vendor/potree/libs/openlayers3/ol.js"></script>
 <script src="assets/vendor/potree/libs/i18next/i18next.js"></script>
 <script src="assets/vendor/potree/libs/jstree/jstree.js"></script>
+<script src="assets/vendor/potree/libs/copc/index.js"></script>
 <script src="assets/vendor/potree/build/potree/potree.js"></script>
 
 <script>
