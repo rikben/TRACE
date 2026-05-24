@@ -56,7 +56,7 @@
     viewer.setDescription("Point cloud test");
 
     Potree.loadPointCloud(
-        "assets/pointclouds/lion_takanawa_ept_laz/metadata.json",
+        "assets/pointclouds/lion_takanawa_ept_laz/ept.json",
         "Lion point cloud",
         event => {
             const pointcloud = event.pointcloud;
