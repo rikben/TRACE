@@ -55,19 +55,16 @@ $assetVersion = time();
                 for deciduous forest environments.
             </div>
 
-            <button id="locateBtn" class="btn btn-outline-success w-100 mb-2">
-                <i class="bi bi-geo-alt"></i>
-                Use my current location
-            </button>
-
-            <button id="logObservationBtn" class="btn btn-success w-100 mb-3" disabled>
-                <i class="bi bi-plus-circle"></i>
+            <button id="logObservationBtn" class="btn btn-success w-100 mb-3">
+                <i class="bi bi-geo-alt-fill"></i>
                 Log tree at current location
             </button>
 
-            <div id="locationStatus" class="alert alert-secondary small">
-                Location not yet available.
-            </div>
+            <div
+                id="locationStatus"
+                class="alert alert-danger small d-none"
+                role="alert"
+            ></div>
 
             <hr>
 
@@ -160,6 +157,39 @@ $assetVersion = time();
 
         <main class="col-md-8 col-lg-9 map-wrapper p-0">
             <div id="map"></div>
+
+            <div id="locationConfirmBar" class="location-confirm-bar d-none">
+                <div class="location-confirm-card">
+                    <div class="small fw-semibold mb-1">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        Confirm tree location
+                    </div>
+
+                    <div id="locationConfirmText" class="small text-muted mb-2">
+                        Location not confirmed yet.
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button id="confirmTreeLocationBtn" class="btn btn-success btn-sm">
+                            Use this location
+                        </button>
+
+                        <div class="d-flex gap-2">
+                            <button id="moveTreeMarkerBtn" class="btn btn-outline-secondary btn-sm flex-fill">
+                                Move marker
+                            </button>
+
+                            <button id="improveTreeLocationBtn" class="btn btn-outline-success btn-sm flex-fill">
+                                Improve GPS
+                            </button>
+                        </div>
+
+                        <button id="cancelTreeLocationBtn" class="btn btn-link btn-sm text-muted">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </div>
@@ -179,10 +209,11 @@ $assetVersion = time();
                 </div>
 
                 <div id="questionContainer" class="question-step"></div>
+
                 <div
-                    id="submissionFeedback"
-                    class="alert mt-3 d-none"
-                    role="alert"
+                        id="submissionFeedback"
+                        class="alert mt-3 d-none"
+                        role="alert"
                 ></div>
             </div>
 

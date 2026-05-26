@@ -7,10 +7,7 @@ const ObservationForm = {
     modal: null,
 
     async open() {
-        if (!AppMap.userLocation) {
-            alert('Please get your current location first.');
-            return;
-        }
+        this.setLogButtonEnabled(false);
 
         const result = await Api.getQuestions();
 
@@ -23,6 +20,115 @@ const ObservationForm = {
         this.answers = {};
         this.currentIndex = 0;
         this.hideSubmissionFeedback();
+
+        await this.startLocationFlow();
+    },
+
+    async startLocationFlow() {
+        AppMap.setLocationStatus();
+
+        const bar = document.getElementById('locationConfirmBar');
+        const text = document.getElementById('locationConfirmText');
+        const confirmBtn = document.getElementById('confirmTreeLocationBtn');
+        const improveBtn = document.getElementById('improveTreeLocationBtn');
+        const moveBtn = document.getElementById('moveTreeMarkerBtn');
+
+        bar.classList.remove('d-none');
+
+        confirmBtn.disabled = true;
+        improveBtn.disabled = true;
+        moveBtn.disabled = true;
+
+        text.textContent = 'Finding your location. This may take a few seconds...';
+
+        try {
+            const location = await AppMap.getBestLocation({
+                durationMs: 9000,
+                desiredAccuracy: 10
+            });
+
+            text.textContent = this.formatLocationStatus(location);
+
+            confirmBtn.disabled = false;
+            improveBtn.disabled = false;
+            moveBtn.disabled = false;
+
+        } catch (error) {
+            text.textContent = error.message || 'Could not determine your location.';
+
+            improveBtn.disabled = false;
+
+            AppMap.setLocationStatus(
+                error.message || 'Could not determine your location.',
+                'danger'
+            );
+        }
+    },
+
+    async improveLocation() {
+        const text = document.getElementById('locationConfirmText');
+        const confirmBtn = document.getElementById('confirmTreeLocationBtn');
+        const improveBtn = document.getElementById('improveTreeLocationBtn');
+        const moveBtn = document.getElementById('moveTreeMarkerBtn');
+
+        confirmBtn.disabled = true;
+        improveBtn.disabled = true;
+        moveBtn.disabled = true;
+
+        text.textContent = 'Improving GPS accuracy...';
+
+        try {
+            const location = await AppMap.getBestLocation({
+                durationMs: 9000,
+                desiredAccuracy: 8
+            });
+
+            text.textContent = this.formatLocationStatus(location);
+            AppMap.setLocationStatus();
+
+            confirmBtn.disabled = false;
+            improveBtn.disabled = false;
+            moveBtn.disabled = false;
+
+        } catch (error) {
+            text.textContent = error.message || 'Could not improve location. You can move the marker manually.';
+
+            confirmBtn.disabled = !AppMap.userLocation;
+            improveBtn.disabled = false;
+            moveBtn.disabled = !AppMap.userLocation;
+        }
+    },
+
+    formatLocationStatus(location) {
+        const accuracy = location.accuracy === null
+            ? 'manually adjusted'
+            : `±${Math.round(location.accuracy)} m`;
+
+        return `Marker position: ${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)} (${accuracy}).`;
+    },
+
+    startManualMarkerMove() {
+        if (!AppMap.userLocation) {
+            return;
+        }
+
+        AppMap.enableManualMarkerMove(true);
+
+        const text = document.getElementById('locationConfirmText');
+        text.textContent = 'Tap the map where the tree is located.';
+
+        const bar = document.getElementById('locationConfirmBar');
+        bar.classList.remove('d-none');
+    },
+
+    confirmLocationAndOpenQuestions() {
+        if (!AppMap.userLocation) {
+            return;
+        }
+
+        AppMap.enableManualMarkerMove(false);
+
+        document.getElementById('locationConfirmBar').classList.add('d-none');
 
         this.modal = new bootstrap.Modal(
             document.getElementById('observationModal')
@@ -274,6 +380,20 @@ const ObservationForm = {
                 });
             }
         }
+    },
+
+    setLogButtonEnabled(enabled) {
+        const button = document.getElementById('logObservationBtn');
+
+        button.disabled = !enabled;
+    },
+
+    cancelLocationFlow() {
+        AppMap.enableManualMarkerMove(false);
+
+        document.getElementById('locationConfirmBar').classList.add('d-none');
+
+        this.setLogButtonEnabled(true);
     },
 
     restoreAnswer(question) {
@@ -620,5 +740,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('previousQuestionBtn').addEventListener('click', () => {
         ObservationForm.previous();
+    });
+
+    document.getElementById('improveTreeLocationBtn').addEventListener('click', () => {
+        ObservationForm.improveLocation();
+    });
+
+    document.getElementById('moveTreeMarkerBtn').addEventListener('click', () => {
+        ObservationForm.startManualMarkerMove();
+    });
+
+    document.getElementById('confirmTreeLocationBtn').addEventListener('click', () => {
+        ObservationForm.confirmLocationAndOpenQuestions();
+    });
+
+    document.getElementById('observationModal').addEventListener('hidden.bs.modal', () => {
+        ObservationForm.setLogButtonEnabled(true);
+    });
+
+    document.getElementById('observationDetailsModal').addEventListener('show.bs.modal', () => {
+        ObservationForm.setLogButtonEnabled(false);
+    });
+
+    document.getElementById('observationDetailsModal').addEventListener('hidden.bs.modal', () => {
+        ObservationForm.setLogButtonEnabled(true);
+    });
+
+    document.getElementById('cancelTreeLocationBtn').addEventListener('click', () => {
+        ObservationForm.cancelLocationFlow();
     });
 });

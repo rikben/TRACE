@@ -6,6 +6,7 @@ const AppMap = {
     userLocationFeature: null,
     userLocationLayer: null,
     observationsLayer: null,
+    manualMarkerMoveEnabled: false,
 
     init() {
         const baseLayer = new ol.layer.Tile({
@@ -20,9 +21,9 @@ const AppMap = {
             }),
             style: new ol.style.Style({
                 image: new ol.style.Circle({
-                    radius: 7,
+                    radius: 8,
                     fill: new ol.style.Fill({ color: '#0d6efd' }),
-                    stroke: new ol.style.Stroke({ color: '#ffffff', width: 2 })
+                    stroke: new ol.style.Stroke({ color: '#ffffff', width: 3 })
                 })
             })
         });
@@ -43,70 +44,149 @@ const AppMap = {
                 zoom: 7
             })
         });
+
+        this.bindManualMarkerMove();
     },
 
-    locateUser() {
+    async getBestLocation(options = {}) {
+        const durationMs = options.durationMs ?? 8000;
+        const desiredAccuracy = options.desiredAccuracy ?? 12;
+
         if (!navigator.geolocation) {
-            this.setLocationStatus('Geolocation is not supported by this browser.', 'danger');
+            throw new Error('Geolocation is not supported by this browser.');
+        }
+
+        return new Promise((resolve, reject) => {
+            let bestPosition = null;
+            let watchId = null;
+
+            const finish = () => {
+                if (watchId !== null) {
+                    navigator.geolocation.clearWatch(watchId);
+                }
+
+                if (!bestPosition) {
+                    reject(new Error('Could not determine your location.'));
+                    return;
+                }
+
+                const location = {
+                    latitude: bestPosition.coords.latitude,
+                    longitude: bestPosition.coords.longitude,
+                    accuracy: bestPosition.coords.accuracy
+                };
+
+                this.setUserLocation(location, true);
+
+                resolve(location);
+            };
+
+            watchId = navigator.geolocation.watchPosition(
+                position => {
+                    if (
+                        !bestPosition ||
+                        position.coords.accuracy < bestPosition.coords.accuracy
+                    ) {
+                        bestPosition = position;
+
+                        const location = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        };
+
+                        this.setUserLocation(location, true);
+
+                        if (position.coords.accuracy <= desiredAccuracy) {
+                            finish();
+                        }
+                    }
+                },
+                error => {
+                    if (watchId !== null) {
+                        navigator.geolocation.clearWatch(watchId);
+                    }
+
+                    reject(new Error(error.message));
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: durationMs,
+                    maximumAge: 0
+                }
+            );
+
+            setTimeout(finish, durationMs);
+        });
+    },
+
+    setUserLocation(location, animate = false) {
+        this.userLocation = location;
+
+        const coordinates = ol.proj.fromLonLat([
+            location.longitude,
+            location.latitude
+        ]);
+
+        this.userLocationFeature.setGeometry(
+            new ol.geom.Point(coordinates)
+        );
+
+        if (animate) {
+            this.map.getView().animate({
+                center: coordinates,
+                zoom: 18,
+                duration: 700
+            });
+        }
+    },
+
+    enableManualMarkerMove(enabled) {
+        this.manualMarkerMoveEnabled = enabled;
+    },
+
+    bindManualMarkerMove() {
+        this.map.on('click', event => {
+            if (!this.manualMarkerMoveEnabled) {
+                return;
+            }
+
+            const lonLat = ol.proj.toLonLat(event.coordinate);
+
+            this.setUserLocation({
+                longitude: lonLat[0],
+                latitude: lonLat[1],
+                accuracy: null
+            });
+
+            this.enableManualMarkerMove(false);
+
+            const text = document.getElementById('locationConfirmText');
+
+            if (text) {
+                text.textContent = 'Marker moved manually. Use this location if the marker is on the tree.';
+            }
+        });
+    },
+
+    setLocationStatus(message = '', type = 'danger') {
+        const element = document.getElementById('locationStatus');
+
+        if (!element) {
             return;
         }
 
-        this.setLocationStatus('Getting your location...', 'secondary');
-
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const longitude = position.coords.longitude;
-                const latitude = position.coords.latitude;
-                const accuracy = position.coords.accuracy;
-
-                this.userLocation = {
-                    latitude,
-                    longitude,
-                    accuracy
-                };
-
-                const coordinates = ol.proj.fromLonLat([longitude, latitude]);
-
-                this.userLocationFeature.setGeometry(
-                    new ol.geom.Point(coordinates)
-                );
-
-                this.map.getView().animate({
-                    center: coordinates,
-                    zoom: 17,
-                    duration: 700
-                });
-
-                document.getElementById('logObservationBtn').disabled = false;
-
-                this.setLocationStatus(
-                    `Location found. Accuracy: ${Math.round(accuracy)} m.`,
-                    'success'
-                );
-            },
-            error => {
-                this.setLocationStatus(`Location error: ${error.message}`, 'danger');
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            }
-        );
-    },
-
-    setLocationStatus(message, type) {
-        const element = document.getElementById('locationStatus');
+        if (!message) {
+            element.classList.add('d-none');
+            element.textContent = '';
+            return;
+        }
 
         element.className = `alert alert-${type} small`;
         element.textContent = message;
-    }
+    },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
     AppMap.init();
-
-    document.getElementById('locateBtn').addEventListener('click', () => {
-        AppMap.locateUser();
-    });
 });
