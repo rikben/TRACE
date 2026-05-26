@@ -194,6 +194,40 @@ $assetVersion = time();
     </div>
 </div>
 
+<!-- Intro modal -->
+<div class="modal fade" id="introModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
+        <div class="modal-content intro-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Welcome to TRACE</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="progress mb-4">
+                    <div id="introProgress" class="progress-bar bg-success" style="width: 0%"></div>
+                </div>
+
+                <div id="introContainer" class="intro-step"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="skipIntroBtn" class="btn btn-outline-secondary">
+                    Skip introduction
+                </button>
+
+                <button id="previousIntroBtn" class="btn btn-outline-secondary">
+                    Previous
+                </button>
+
+                <button id="nextIntroBtn" class="btn btn-success">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Observation modal -->
 <div class="modal fade" id="observationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
@@ -255,6 +289,7 @@ $assetVersion = time();
 <script src="assets/js/api.js?v=<?= $assetVersion ?>"></script>
 <script src="assets/js/map.js?v=<?= $assetVersion ?>"></script>
 <script src="assets/js/observations.js?v=<?= $assetVersion ?>"></script>
+<script src="assets/js/intro.js?v=<?= $assetVersion ?>"></script>
 <script src="assets/js/form.js?v=<?= $assetVersion ?>"></script>
 </body>
 </html>
