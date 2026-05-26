@@ -77,6 +77,21 @@ $assetVersion = time();
                 </label>
             </div>
 
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="biodiversityToggle" checked>
+                <label class="form-check-label" for="biodiversityToggle">
+                    Show biodiversity layer
+                    <i
+                            class="bi bi-info-circle text-muted ms-1"
+                            tabindex="0"
+                            data-bs-toggle="popover"
+                            data-bs-trigger="hover focus"
+                            data-bs-placement="right"
+                            data-bs-content="This layer uses tree complexity as a proxy for biodiversity. The score ranges from 0 to 100 and is based on weighted normalised tree crown volume (50%), crown diameter (20%), and tree height (30%)."
+                    ></i>
+                </label>
+            </div>
+
             <div class="mt-3">
                 <label for="heatmapOpacity" class="form-label small">
                     Biodiversity layer opacity
@@ -145,8 +160,12 @@ $assetVersion = time();
                                 Biodiversity heatmap
                             </div>
 
-                            <div class="legend-placeholder small text-muted">
-                                Heatmap legend will follow.
+                            <div class="biodiversity-gradient mb-1"></div>
+
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span>0</span>
+                                <span>Complexity score</span>
+                                <span>100</span>
                             </div>
 
                         </div>
@@ -284,6 +303,7 @@ $assetVersion = time();
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ol@v10.6.1/dist/ol.js"></script>
 
 <script src="assets/js/api.js?v=<?= $assetVersion ?>"></script>

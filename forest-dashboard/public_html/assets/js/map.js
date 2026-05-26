@@ -6,11 +6,57 @@ const AppMap = {
     userLocationFeature: null,
     userLocationLayer: null,
     observationsLayer: null,
+    biodiversityLayer: null,
     manualMarkerMoveEnabled: false,
 
     init() {
         const baseLayer = new ol.layer.Tile({
             source: new ol.source.OSM()
+        });
+
+        this.biodiversityLayer = new ol.layer.WebGLTile({
+            opacity: 0.7,
+            minZoom: 13,
+            source: new ol.source.GeoTIFF({
+                sources: [
+                    {
+                        url: 'assets/cogs/reirinck.tif',
+                        nodata: -9999,
+                        min: 0,
+                        max: 100
+                    }
+                ],
+                normalize: false
+            }),
+            style: {
+                color: [
+                    'case',
+
+                    ['==', ['band', 1], 0],
+                    [0, 0, 0, 0],
+
+                    [
+                        'interpolate',
+                        ['linear'],
+                        ['band', 1],
+
+                        0,
+                        [217, 240, 211, 1],
+
+                        25,
+                        [166, 219, 160, 1],
+
+                        50,
+                        [90, 174, 97, 1],
+
+                        75,
+                        [27, 120, 55, 1],
+
+                        100,
+                        [0, 69, 41, 1]
+                    ]
+                ]
+            }
         });
 
         this.userLocationFeature = new ol.Feature();
@@ -36,6 +82,7 @@ const AppMap = {
             target: 'map',
             layers: [
                 baseLayer,
+                this.biodiversityLayer,
                 this.observationsLayer,
                 this.userLocationLayer
             ],
@@ -46,6 +93,28 @@ const AppMap = {
         });
 
         this.bindManualMarkerMove();
+        this.bindLayerControls();
+    },
+
+    bindLayerControls() {
+        const biodiversityToggle = document.getElementById('biodiversityToggle');
+        const opacitySlider = document.getElementById('heatmapOpacity');
+
+        if (biodiversityToggle) {
+            biodiversityToggle.addEventListener('change', event => {
+                this.biodiversityLayer.setVisible(event.target.checked);
+            });
+        }
+
+        if (opacitySlider) {
+            opacitySlider.addEventListener('input', event => {
+                this.biodiversityLayer.setOpacity(Number(event.target.value));
+            });
+        }
+
+        document.querySelectorAll('[data-bs-toggle="popover"]').forEach(element => {
+            new bootstrap.Popover(element);
+        });
     },
 
     async getBestLocation(options = {}) {
@@ -59,8 +128,15 @@ const AppMap = {
         return new Promise((resolve, reject) => {
             let bestPosition = null;
             let watchId = null;
+            let finished = false;
 
             const finish = () => {
+                if (finished) {
+                    return;
+                }
+
+                finished = true;
+
                 if (watchId !== null) {
                     navigator.geolocation.clearWatch(watchId);
                 }
@@ -103,6 +179,12 @@ const AppMap = {
                     }
                 },
                 error => {
+                    if (finished) {
+                        return;
+                    }
+
+                    finished = true;
+
                     if (watchId !== null) {
                         navigator.geolocation.clearWatch(watchId);
                     }
@@ -184,7 +266,7 @@ const AppMap = {
 
         element.className = `alert alert-${type} small`;
         element.textContent = message;
-    },
+    }
 };
 
 document.addEventListener('DOMContentLoaded', () => {

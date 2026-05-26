@@ -2,6 +2,11 @@
 
 const Observations = {
     async load() {
+        if (!AppMap.map || !AppMap.observationsLayer) {
+            console.error('Map is not ready yet.');
+            return;
+        }
+
         const result = await Api.getPoints();
 
         if (!result.success) {
@@ -45,6 +50,11 @@ const Observations = {
     },
 
     bindMapClick() {
+        if (!AppMap.map) {
+            console.error('Map is not ready yet.');
+            return;
+        }
+
         AppMap.map.on('click', event => {
             const feature = AppMap.map.forEachFeatureAtPixel(event.pixel, item => item);
 
