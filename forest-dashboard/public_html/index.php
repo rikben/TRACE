@@ -217,7 +217,7 @@ $assetVersion = time();
 
 <!-- Intro modal -->
 <div class="modal fade" id="introModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
+    <div class="modal-dialog modal-fullscreen-sm-down">
         <div class="modal-content intro-modal">
             <div class="modal-header">
                 <h5 class="modal-title">Welcome to TRACE</h5>
@@ -251,7 +251,7 @@ $assetVersion = time();
 
 <!-- Observation modal -->
 <div class="modal fade" id="observationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-centered">
+    <div class="modal-dialog modal-fullscreen-sm-down">
         <div class="modal-content observation-modal">
             <div class="modal-header">
                 <h5 class="modal-title">Tree observation</h5>

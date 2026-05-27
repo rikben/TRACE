@@ -443,6 +443,37 @@ body {
     }
 }
 
+/* =========================================================
+   Intro modal mobile fix
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+    .intro-modal {
+        min-height: auto;
+        height: 100vh;
+    }
+
+    #introModal .modal-content {
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    #introModal .modal-body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .intro-card {
+        min-height: auto;
+    }
+
+    .intro-pointcloud-viewer {
+        height: 38vh;
+        min-height: 240px;
+    }
+}
+
 .intro-pointcloud-card {
     border: 1px solid #dee2e6;
     border-radius: 0.75rem;
