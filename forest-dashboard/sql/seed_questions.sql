@@ -213,7 +213,7 @@ INSERT INTO questions (
 )
 VALUES (
            'canopy_density',
-           'How dense is the canopy overhead?',
+           'How dense is the canopy of the tree you are inspecting overhead?',
            'single_choice',
            'Canopy density affects temperature, moisture, and the amount of sunlight reaching the forest floor.',
            NULL,
