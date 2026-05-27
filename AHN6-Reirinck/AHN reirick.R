@@ -113,6 +113,192 @@ print(tree_stats)
 
 summary(tree_stats)
 
+
+
+#################################################
+# TREE CENTROIDS
+#################################################
+
+# centroid of each segmented crown polygon
+tree_centroids <- sf::st_centroid(tree_stats)
+
+# extract centroid coordinates
+coords <- sf::st_coordinates(tree_centroids)
+
+tree_stats$centroid_x <- coords[,1]
+tree_stats$centroid_y <- coords[,2]
+
+#################################################
+# CROWN COMPLEXITY SCORE
+#################################################
+
+# normalize variables between 0 and 1
+norm_height <- (
+  tree_stats$height_max -
+    min(tree_stats$height_max, na.rm = TRUE)
+) / (
+  max(tree_stats$height_max, na.rm = TRUE) -
+    min(tree_stats$height_max, na.rm = TRUE)
+)
+
+norm_volume <- (
+  tree_stats$crown_volume -
+    min(tree_stats$crown_volume, na.rm = TRUE)
+) / (
+  max(tree_stats$crown_volume, na.rm = TRUE) -
+    min(tree_stats$crown_volume, na.rm = TRUE)
+)
+
+norm_diameter <- (
+  tree_stats$crown_diameter -
+    min(tree_stats$crown_diameter, na.rm = TRUE)
+) / (
+  max(tree_stats$crown_diameter, na.rm = TRUE) -
+    min(tree_stats$crown_diameter, na.rm = TRUE)
+)
+
+#################################################
+# COMBINED COMPLEXITY SCORE
+#################################################
+
+# weighted complexity score
+tree_stats$crown_complexity <- (
+  0.5 * norm_volume +
+    0.3 * norm_height +
+    0.2 * norm_diameter
+)
+
+#################################################
+# OPTIONAL: SCALE 0-100
+#################################################
+
+tree_stats$crown_complexity_score <-
+  round(tree_stats$crown_complexity * 100, 1)
+
+#################################################
+# VIEW RESULTS
+#################################################
+
+head(tree_stats)
+
+summary(tree_stats$crown_complexity_score)
+
+
+
+
+#################################################
+# HEATMAP OF CROWN COMPLEXITY
+#################################################
+
+# convert crowns to terra vector
+tree_vect <- vect(tree_stats)
+
+#################################################
+# REPROJECT ONLY FOR HEATMAP EXPORT
+#################################################
+
+# reproject vectors to Web Mercator
+tree_vect_3857 <- project(tree_vect, "EPSG:3857")
+
+# reproject CHM extent/template
+chm_3857 <- project(chm, "EPSG:3857")
+
+#################################################
+# CREATE RASTER TEMPLATE
+#################################################
+
+heatmap_raster <- rast(
+  ext(chm_3857),
+  resolution = 1,   # 1 meter
+  crs = "EPSG:3857"
+)
+
+#################################################
+# RASTERIZE POLYGONS
+#################################################
+
+heatmap <- rasterize(
+  tree_vect_3857,
+  heatmap_raster,
+  field = "crown_complexity_score",
+  fun = mean,
+  background = NA,
+  touches = TRUE
+)
+
+#################################################
+# SMOOTH ONLY VALID PIXELS
+#################################################
+
+heatmap <- focal(
+  heatmap,
+  w = matrix(1,7,7),
+  fun = mean,
+  na.rm = TRUE
+)
+
+#################################################
+# GREEN COLOR PALETTE
+#################################################
+
+green_palette <- colorRampPalette(c(
+  "#d9f0d3",
+  "#78c679",
+  "#238443",
+  "#004529"
+))
+
+#################################################
+# CREATE PLOT VERSION
+#################################################
+
+# keep plotting clean by hiding nodata
+plot_heatmap <- heatmap
+
+#################################################
+# PLOT
+#################################################
+
+plot(
+  plot_heatmap,
+  col = green_palette(100),
+  main = "Tree Crown Complexity Heatmap"
+)
+
+#################################################
+# EXPORT VERSION WITH NODATA = -9999
+#################################################
+
+# create export copy
+heatmap_export <- heatmap
+
+# assign nodata only for export
+heatmap_export[is.na(heatmap_export)] <- -9999
+
+#################################################
+# EXPORT CLOUD OPTIMIZED GEOTIFF
+#################################################
+
+writeRaster(
+  heatmap_export,
+  "tree_crown_complexity_heatmap_cog_3857.tif",
+  overwrite = TRUE,
+  
+  filetype = "COG",
+  
+  NAflag = -9999,
+  
+  gdal = c(
+    "COMPRESS=DEFLATE",
+    "LEVEL=9",
+    "PREDICTOR=2",
+    "OVERVIEWS=AUTO",
+    "BLOCKSIZE=512"
+  )
+)
+
+
+
 #################################################
 # EXPORT
 #################################################
@@ -122,5 +308,7 @@ write.csv(
   "tree_statistics.csv",
   row.names = FALSE
 )
+
+
 
 
