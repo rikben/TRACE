@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "forest-dashboard/*"
+          source: "forest-dashboard/*,!forest-dashboard/public_html/assets/pointclouds/**"
           target: ${{ secrets.SSH_TARGET_DIR }}
           strip_components: 1
           overwrite: true
