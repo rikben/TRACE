@@ -423,3 +423,50 @@ body {
             #004529
     );
 }
+
+.intro-modal .modal-body {
+    overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+    .intro-modal {
+        min-height: 100vh;
+    }
+
+    .intro-card {
+        min-height: auto;
+    }
+
+    .intro-pointcloud-viewer {
+        height: 42vh;
+        min-height: 260px;
+    }
+}
+
+.intro-pointcloud-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    margin-top: 1rem;
+}
+
+.intro-pointcloud-viewer {
+    width: 100%;
+    height: 320px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: #000000;
+}
+
+.embedded-potree-render-area {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 767px) {
+    .intro-pointcloud-viewer {
+        height: 45vh;
+        min-height: 300px;
+    }
+}

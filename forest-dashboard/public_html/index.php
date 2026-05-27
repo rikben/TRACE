@@ -15,6 +15,8 @@ $assetVersion = time();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/ol@v10.6.1/ol.css" rel="stylesheet">
+    <link href="assets/vendor/potree/build/potree/potree.css" rel="stylesheet">
+    <link href="assets/vendor/potree/libs/jquery-ui/jquery-ui.min.css" rel="stylesheet">
 
     <link href="assets/css/style.css?v=<?= $assetVersion ?>" rel="stylesheet">
 </head>
@@ -306,9 +308,24 @@ $assetVersion = time();
 <script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ol@v10.6.1/dist/ol.js"></script>
 
+<script src="assets/vendor/potree/libs/jquery/jquery-3.1.1.min.js"></script>
+<script src="assets/vendor/potree/libs/spectrum/spectrum.js"></script>
+<script src="assets/vendor/potree/libs/jquery-ui/jquery-ui.min.js"></script>
+<script src="assets/vendor/potree/libs/three.js/build/three.min.js"></script>
+<script src="assets/vendor/potree/libs/other/BinaryHeap.js"></script>
+<script src="assets/vendor/potree/libs/tween/tween.min.js"></script>
+<script src="assets/vendor/potree/libs/d3/d3.js"></script>
+<script src="assets/vendor/potree/libs/proj4/proj4.js"></script>
+<!--<script src="assets/vendor/potree/libs/openlayers3/ol.js"></script>-->
+<script src="assets/vendor/potree/libs/i18next/i18next.js"></script>
+<script src="assets/vendor/potree/libs/jstree/jstree.js"></script>
+<script src="assets/vendor/potree/libs/copc/index.js"></script>
+<script src="assets/vendor/potree/build/potree/potree.js"></script>
+
 <script src="assets/js/api.js?v=<?= $assetVersion ?>"></script>
 <script src="assets/js/map.js?v=<?= $assetVersion ?>"></script>
 <script src="assets/js/observations.js?v=<?= $assetVersion ?>"></script>
+<script src="assets/js/pointcloud-viewer.js?v=<?= $assetVersion ?>"></script>
 <script src="assets/js/intro.js?v=<?= $assetVersion ?>"></script>
 <script src="assets/js/form.js?v=<?= $assetVersion ?>"></script>
 </body>

@@ -1,0 +1,5 @@
+
+# Raw point cloud source files
+data/pointclouds/
+.DS_Store
+.idea/

@@ -56,14 +56,21 @@ const IntroModal = {
                     Not all trees offer the same habitat value. A simple tree structure may provide
                     fewer niches, while a complex tree can create more opportunities for biodiversity.
                 </p>
-
+            
                 <p>
-                    Later, this introduction will show two 3D point clouds: one simple tree and one
-                    more complex tree.
+                    Below you can explore an example of a complex tree as a 3D point cloud.
                 </p>
-
-                <div class="intro-pointcloud-placeholder">
-                    3D tree point cloud viewer will be added here.
+            
+                <div class="intro-pointcloud-card">
+                    <div class="small fw-semibold mb-2">
+                        Complex tree structure
+                    </div>
+            
+                    <div id="introPointcloudViewer" class="intro-pointcloud-viewer">
+                        <div class="text-muted small text-center p-3">
+                            Loading 3D tree...
+                        </div>
+                    </div>
                 </div>
             `
         },
@@ -117,6 +124,7 @@ const IntroModal = {
 
             this.updateButtons();
             this.updateProgress();
+            this.bindPageActions();
 
             requestAnimationFrame(() => {
                 container.classList.add('intro-step-visible');
@@ -125,6 +133,8 @@ const IntroModal = {
     },
 
     next() {
+        PointCloudViewer.destroyAll();
+
         if (this.currentIndex < this.pages.length - 1) {
             this.currentIndex++;
             this.render();
@@ -135,6 +145,8 @@ const IntroModal = {
     },
 
     previous() {
+        PointCloudViewer.destroyAll();
+
         if (this.currentIndex === 0) {
             return;
         }
@@ -144,6 +156,7 @@ const IntroModal = {
     },
 
     close() {
+        PointCloudViewer.destroyAll();
         this.modal.hide();
     },
 
@@ -160,7 +173,23 @@ const IntroModal = {
         const progress = ((this.currentIndex + 1) / this.pages.length) * 100;
 
         document.getElementById('introProgress').style.width = `${progress}%`;
-    }
+    },
+
+    bindPageActions() {
+        const viewer = document.getElementById('introPointcloudViewer');
+
+        if (!viewer) {
+            return;
+        }
+
+        setTimeout(() => {
+            PointCloudViewer.loadInto(
+                'introPointcloudViewer',
+                'assets/pointclouds/complex_tree/metadata.json',
+                'Complex tree'
+            );
+        }, 250);
+    },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
