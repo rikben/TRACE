@@ -87,8 +87,8 @@ const AppMap = {
                 this.userLocationLayer
             ],
             view: new ol.View({
-                center: ol.proj.fromLonLat([5.2913, 52.1326]),
-                zoom: 7
+                center: ol.proj.fromLonLat([6.6492402, 52.033396]),
+                zoom: 16
             })
         });
 
