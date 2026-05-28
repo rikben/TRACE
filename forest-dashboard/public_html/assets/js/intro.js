@@ -52,27 +52,73 @@ const IntroModal = {
             icon: 'bi-diagram-3',
             title: 'Simple and complex trees',
             body: `
-                <p>
-                    Not all trees offer the same habitat value. A simple tree structure may provide
-                    fewer niches, while a complex tree can create more opportunities for biodiversity.
-                </p>
-            
-                <p>
-                    Below you can explore an example of a complex tree as a 3D point cloud.
-                </p>
-            
+        <p>
+            Tree structure matters for biodiversity. A simple tree may offer fewer
+            habitats, while a complex tree can support more species.
+        </p>
+
+        <p>
+            Compare the two 3D examples below. The complex tree is taller, has a
+            larger stem, a denser and more layered canopy, and may contain dead wood.
+            Dead wood can create additional habitats for insects, fungi, birds, and
+            other organisms.
+        </p>
+
+        <div class="row g-3 mt-2">
+            <div class="col-md-6">
                 <div class="intro-pointcloud-card">
-                    <div class="small fw-semibold mb-2">
-                        Complex tree structure
+                    <div class="small fw-semibold mb-1">
+                        Simple tree
                     </div>
-            
-                    <div id="introPointcloudViewer" class="intro-pointcloud-viewer">
+
+                    <p class="small text-muted mb-2">
+                        A less layered structure with a smaller and more open canopy.
+                    </p>
+
+                    <button
+                        id="loadSimpleTreeBtn"
+                        class="btn btn-outline-success btn-sm w-100 mb-2"
+                        type="button"
+                    >
+                        Load simple tree
+                    </button>
+
+                    <div id="simpleTreeViewer" class="intro-pointcloud-viewer">
                         <div class="text-muted small text-center p-3">
-                            Loading 3D tree...
+                            Load the simple tree to view it in 3D.
                         </div>
                     </div>
                 </div>
-            `
+            </div>
+
+            <div class="col-md-6">
+                <div class="intro-pointcloud-card">
+                    <div class="small fw-semibold mb-1">
+                        Complex tree
+                    </div>
+
+                    <p class="small text-muted mb-2">
+                        A taller tree with a larger stem, denser canopy, layered structure,
+                        and possible dead wood habitats.
+                    </p>
+
+                    <button
+                        id="loadComplexTreeBtn"
+                        class="btn btn-outline-success btn-sm w-100 mb-2"
+                        type="button"
+                    >
+                        Load complex tree
+                    </button>
+
+                    <div id="complexTreeViewer" class="intro-pointcloud-viewer">
+                        <div class="text-muted small text-center p-3">
+                            Load the complex tree to view it in 3D.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
         },
         {
             icon: 'bi-geo-alt-fill',
@@ -176,19 +222,34 @@ const IntroModal = {
     },
 
     bindPageActions() {
-        const viewer = document.getElementById('introPointcloudViewer');
+        const simpleButton = document.getElementById('loadSimpleTreeBtn');
+        const complexButton = document.getElementById('loadComplexTreeBtn');
 
-        if (!viewer) {
-            return;
+        if (simpleButton) {
+            simpleButton.addEventListener('click', () => {
+                simpleButton.disabled = true;
+                simpleButton.textContent = 'Loading...';
+
+                PointCloudViewer.loadInto(
+                    'simpleTreeViewer',
+                    'assets/pointclouds/noncomplex_tree/metadata.json',
+                    'Simple tree'
+                );
+            });
         }
 
-        setTimeout(() => {
-            PointCloudViewer.loadInto(
-                'introPointcloudViewer',
-                'assets/pointclouds/complex_tree/metadata.json',
-                'Complex tree'
-            );
-        }, 250);
+        if (complexButton) {
+            complexButton.addEventListener('click', () => {
+                complexButton.disabled = true;
+                complexButton.textContent = 'Loading...';
+
+                PointCloudViewer.loadInto(
+                    'complexTreeViewer',
+                    'assets/pointclouds/complex_tree/metadata.json',
+                    'Complex tree'
+                );
+            });
+        }
     },
 };
 
