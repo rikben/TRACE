@@ -28,6 +28,7 @@ services:
       - db_data:/var/lib/mysql
       - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./sql/seed_questions.sql:/docker-entrypoint-initdb.d/02-seed_questions.sql
+      - ./sql/seed_responses.sql:/docker-entrypoint-initdb.d/03-seed_responses.sql
 
   phpmyadmin:
     image: phpmyadmin:latest
