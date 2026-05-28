@@ -186,6 +186,7 @@ docker compose down
 # Running the R Workflows
 
 The `AHN6-Reirinck` directory contains R scripts used for LiDAR processing and biodiversity analysis.
+This directory does not contain the AHN6 dataset. This can be downloaded here: https://www.ahn.nl/dataroom. 
 
 ## Requirements
 
@@ -198,12 +199,6 @@ Install:
   https://posit.co/download/rstudio-desktop/
 
 Required R packages depend on the individual scripts and workflows.
-
-Download:
-
-- https://www.ahn.nl/dataroom 
-
-As there is no data in this repository the AHN data needs to be download from the website above.
 ---
 
 ## Running the Scripts
