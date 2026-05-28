@@ -153,9 +153,9 @@ INSERT INTO question_options (
     sort_order
 )
 VALUES
-    (@question_id, '1_3', '1-3 meters', 1),
-    (@question_id, '3_5', '3-5 meters', 2),
-    (@question_id, '5_plus', '5+ meters', 3);
+    (@question_id, '3_5', '3-5 meters', 1),
+    (@question_id, '5_10', '5-10 meters', 2),
+    (@question_id, '10_plus', '10+ meters', 3);
 
 -- =========================================================
 -- QUESTION 5
