@@ -50,10 +50,12 @@ R-based workflow for analysing LiDAR data and deriving forest structure metrics 
 
 ### Current analyses include
 
-- Tree crown detection
-- Crown statistics
+- Tree segmentation
+- Crown and tree statistics
 - Forest structure metrics
 - LiDAR preprocessing workflows
+- Calculate normalized weighted crown complexity score
+- Create heatmap based on complexity score
 
 ### Technologies
 
@@ -197,6 +199,11 @@ Install:
 
 Required R packages depend on the individual scripts and workflows.
 
+Download:
+
+- https://www.ahn.nl/dataroom 
+
+As there is no data in this repository the AHN data needs to be download from the website above.
 ---
 
 ## Running the Scripts

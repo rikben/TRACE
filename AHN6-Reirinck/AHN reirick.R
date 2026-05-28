@@ -75,8 +75,7 @@ plot(visualizedtreeID, size = 6, bg = "white")
 # TREE-LEVEL STATISTICS
 #################################################
 
-# 1. Normalize the point cloud using the DTM generated earlier
-# This ensures Z coordinates represent height above ground, not elevation
+#Normalize the point cloud 
 trees_normalized <- normalize_height(trees_silva2016, dtm)
 
 # remove unsegmented points
@@ -167,10 +166,6 @@ tree_stats$crown_complexity <- (
     0.3 * norm_height +
     0.2 * norm_diameter
 )
-
-#################################################
-# OPTIONAL: SCALE 0-100
-#################################################
 
 tree_stats$crown_complexity_score <-
   round(tree_stats$crown_complexity * 100, 1)
